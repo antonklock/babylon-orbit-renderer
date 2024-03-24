@@ -12,8 +12,12 @@
 		"moduleResolution": "bundler",
 		"typeRoots": [
 			"./node_modules/@types"
-		]
-	}
+		],
+	},
+	"types": [
+		"babylonjs",
+		"babylonjs-loaders",
+	]
 	// Path aliases are handled by https://kit.svelte.dev/docs/configuration#alias
 	// except $lib which is handled by https://kit.svelte.dev/docs/configuration#files
 	//
