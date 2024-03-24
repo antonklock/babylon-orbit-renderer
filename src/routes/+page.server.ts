@@ -24,18 +24,59 @@ export const load = (async () => {
 
         if (cachedTileset) {
             tileset = JSON.parse(cachedTileset);
-            console.log('Tileset retrieved from cache:', tileset);
+            // console.log('Tileset retrieved from cache:', tileset);
         } else {
             const tileset = await fetch(tilesetUrl);
             // tileset = await loadFromLglCore(tilesetUrl, Tiles3DLoader);
             await client.set(cacheKey, JSON.stringify(tileset));
-            console.log('Tileset cached:', tileset);
+            // console.log('Tileset cached:', tileset);
         }
     } catch (error) {
         console.error('Error interacting with Redis:', error);
     }
 
-    const contentUri = tileset.root.children[0].children[0].content.uri;
+    // console.log(tileset.root.children);
+    // console.log(tileset.root.children[0].children[0]);
+
+    let contentUri = tileset.root.children[0].children[0].content.uri;
+
+    if (contentUri.startsWith('/v1/3dtiles/')) {
+        contentUri = contentUri.substring('/v1/3dtiles/'.length);
+    }
+    // const renderUrl = tileset.basePath + contentUri;
+    // console.log(renderUrl);
+
+    const renderUrl = 'https://tile.googleapis.com/v1/3dtiles/datasets/CgA/files/UlRPVEYuYnVs.json?session=CIqhrPOFvdHSYg&key=AIzaSyDzxgrPkpCqVDZHsd_QP-zzJ9onpjM4gzA'
+    const renderResponse = await fetch(renderUrl);
+    console.log('renderResponse:', renderResponse);
+
+    // try {
+    //     // const renderResponse = await fetch(renderUrl);
+    //     // console.log('renderResponse:', renderResponse);
+
+    //     fetch(renderUrl)
+    //         .then(response => {
+    //             console.log('HTTP Status Code:', response.status);
+
+    //             // For debugging, let's see the content type 
+    //             console.log('Content-Type:', response.headers.get('Content-Type'));
+
+    //             // Convert response to text for initial inspection
+    //             return response.text();
+    //         })
+    //         .then(data => {
+    //             console.log('First few lines:', data.slice(0, 100)); // Adjust slice length if needed
+    //         })
+    //         .catch(error => {
+    //             console.error('Error fetching glTF:', error);
+    //         });
+    // } catch (e) {
+    //     console.error('Error fetching tileset:', e);
+    // }
+
+
+
+    // const contentUri = tileset.root.children[0].children[0].content.uri;
     // console.log(tileset);
     // const renderUrl = `https://tile.googleapis.com${contentUri}/&key=${env.SECRET_GOOGLE_MAPS_API_KEY}`;
     // console.log('contentUri: ' + contentUri);
